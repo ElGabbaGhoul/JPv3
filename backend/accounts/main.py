@@ -2,7 +2,7 @@
 # Declares router, import dependencies from crud.py and models.py
 # contains route handlers
 
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
@@ -26,10 +26,25 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password", headers={"WWW-Authenticate": "Bearer"})
     access_token_expires = timedelta(minutes=access_token_expires_minutes)
-    print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',user)
+    print(f'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', user)
     access_token = await services.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+# Account Verification #Get Personal Account Details
+@router.get("/accounts/profile", response_model=models.User, tags=["User Authentication"])
+async def read_users_me(current_user: models.User = Depends(services.get_current_active_user)):
+    return current_user
+
+
+@router.get("/accounts/profile/items", tags=["User Authentication"])
+async def read_own_items(
+    response: Response, current_user: models.User = Depends(services.get_current_active_user)
+):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return {"playlists": current_user.playlists}
+
 
 # Account CRUD
 @router.post("/api/user", response_description="Create new user", response_model=models.User, tags=['users'])

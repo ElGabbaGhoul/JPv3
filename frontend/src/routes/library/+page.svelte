@@ -1,10 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
-	export let data;
+	// export let data;
 
-	onMount(async () => {
-		console.log(data);
-	});
+	onMount(async () => {});
 </script>
 
 <div>Hello Library</div>

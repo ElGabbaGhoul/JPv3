@@ -4,8 +4,7 @@
 	import PasswordStrengthMeter from '$lib/components/PasswordStrengthMeter.svelte';
 	import { PUBLIC_BACKEND_USERS } from '$env/static/public';
 	import WaveComponent from '$lib/components/WaveComponent.svelte';
-	import { isLoggedIn } from '$lib/stores/stores';
-	import { browser } from '$app/environment';
+	import { isLoggedIn, loginName } from '$lib/stores/stores';
 
 	let isMouseOver = false;
 
@@ -41,6 +40,7 @@
 				accessToken = data.access_token;
 				console.log('Access Token: ', accessToken);
 				document.cookie = `access_token=${encodeURIComponent(accessToken)}`;
+				$loginName = username;
 				$isLoggedIn = true;
 				goto('/home');
 			} else {
