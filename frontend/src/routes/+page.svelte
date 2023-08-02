@@ -42,7 +42,7 @@
 				document.cookie = `access_token=${encodeURIComponent(accessToken)}`;
 				$loginName = username;
 				$isLoggedIn = true;
-				goto('/home');
+				goto('/account');
 			} else {
 				console.error('Login failed');
 				console.log(response.status);

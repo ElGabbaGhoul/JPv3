@@ -4,22 +4,29 @@
   - [x] add "loading..." for when awaiting response for login
   - [x] add "loading..." for when awaiting response for signup
   - [x] while Token, loggedIn===True
-  - [ ] implement rate limiting (look in to aioredis)
-  - [ ] implement signup form expectations (password strength, valid email, etc)
-  - [ ] forgot password
-  - [ ] change gap in +page.svelte to fit nav bar properly on smaller screens
+  - [x] change gap in +page.svelte to fit nav bar properly on smaller screens
 - [x] Change login page to request login with email instead of username
 - [ ] Create API calls to pull playlists to users from playlist api
 - [ ] Import music from external apis
   - [ ] Spotify
+    - [ ] Add music to user playlists
+    - [ ] Play music
+- [ ] Setup profile page to render user data 
+  - [ ] account page
+    - [ ] display username (email address)
+    - [ ] display name
+    - [ ] display pfp
+    - [ ] display role
+    - [ ] display playlist list
+
+
+  ---
+  ## PostMVP
+  - [ ] implement rate limiting (look in to aioredis)
+  - [ ] implement signup form expectations (password strength, valid email, etc)
+  - [ ] forgot password
+
   - [ ] Apple Music
   - [ ] SoundCloud
   - [ ] Etc
-    - [ ] Add music to user playlists
-    - [ ] Play music
-- [ ] Setup profile page to render user data
-  - [ ] account info
-    - [ ] edit profile
-    - [ ] pfp
-  - [ ] playlists
-  - [ ] whatever else a profile might need
+  --- 

@@ -9,5 +9,7 @@
 	});
 </script>
 
+<!-- Display first name only -->
+<!-- currently displaying full name -->
 <div>Hello {data.name}!</div>
 <div>This is where the homepage lives!</div>
