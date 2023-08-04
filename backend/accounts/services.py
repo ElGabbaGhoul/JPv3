@@ -34,20 +34,30 @@ async def create_access_token(data: dict, expires_delta: timedelta or None=None)
 async def get_current_user(token: str = Depends(oauth_2_scheme)):
     credential_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Could not validate credentials - accounts",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
+        print('right before the payload comes this string')
+        print('TOKEN HERE', token)
+        print('KEY HERE', secret_key)
+        print('ALGO HERE', algorithm)
         payload = jwt.decode(token, secret_key, algorithms=[algorithm])
+        print("THIS IS THE PAYLOAD", payload)
         username: str = payload.get("sub")
+        print("THIS IS THE USERNAME", username)
         if username is None:
+            print('error1')
             raise credential_exception
         token_data = models.TokenData(username=username)
     except JWTError:
+        print('error2')
         raise credential_exception
     user = await db.fetch_one_user(username=token_data.username)
     if user is None:
+        print('error3')
         raise credential_exception
+    print(f'user id: {user.id}')
     return user
 
 async def get_current_active_user(

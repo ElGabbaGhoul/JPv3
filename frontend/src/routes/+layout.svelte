@@ -6,13 +6,10 @@
 
 	$: {
 		if ($isLoggedIn) {
-			console.log($isLoggedIn);
 		}
 	}
 
-	onMount(async () => {
-		console.log('is logged in', $isLoggedIn);
-	});
+	onMount(async () => {});
 </script>
 
 {#if $isLoggedIn == true}

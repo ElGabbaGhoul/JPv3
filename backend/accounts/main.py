@@ -14,6 +14,7 @@ access_token_expires_minutes=int(os.getenv('ACCESS_TOKEN_EXPIRES_MINUTES'))
 
 
 from . import models, db, services
+from playlists.db import fetch_playlists_by_user_id
 
 router = APIRouter()
 
@@ -40,14 +41,18 @@ async def read_users_me(current_user: models.User = Depends(services.get_current
 
 @router.get("/accounts/profile/items", tags=["User Authentication"])
 async def read_own_items(
-    response: Response, current_user: models.User = Depends(services.get_current_active_user)
+    response: Response, current_user: models.User = Depends(services.get_current_user)
 ):
     response.headers["Access-Control-Allow-Origin"] = "*"
-    return {"playlists": current_user.playlists}
+    playlists = await fetch_playlists_by_user_id(current_user.id)
+    if playlists:
+      print("here's what I found")
+      return playlists
+    return []
 
 
 # Account CRUD
-@router.post("/api/user", response_description="Create new user", response_model=models.User, tags=['users'])
+@router.post("/api/user", response_description="Create new user", response_model=models.User, tags=['users api'])
 async def create_new_user(user: models.UserInDB = Body(...)):
     # Check if email already exists in database
     existing_user = await db.check_db_for_user(user.username)
@@ -64,7 +69,7 @@ async def create_new_user(user: models.UserInDB = Body(...)):
         return response
     raise HTTPException(status_code=400, detail="Something went wrong / Bad Request")
 
-@router.get("/api/user/{username}", response_description="Get a single user", response_model=models.User, tags=['users'])
+@router.get("/api/user/{username}", response_description="Get a single user", response_model=models.User, tags=['users api'])
 async def get_user_by_username(username: str):
     response = await db.fetch_one_user(username)
     if response:
@@ -72,7 +77,7 @@ async def get_user_by_username(username: str):
     raise HTTPException(404, f"User with username {username} not found")
 
 # Does not work after changing {id} to {username}
-@router.put("/api/user/{id}", response_description="Update a user", response_model=models.User, tags=['users'])
+@router.put("/api/user/{id}", response_description="Update a user", response_model=models.User, tags=['users api'])
 async def put_user(id: str, user: models.UpdateUserModel = Body(...)):
     user = {k: v for k, v in user.dict().items() if v is not None}
     if len(user) >= 1:
@@ -81,7 +86,7 @@ async def put_user(id: str, user: models.UpdateUserModel = Body(...)):
         return response
     raise HTTPException(404, f"User {id} not found.")
 
-@router.delete("/api/user/{id}", response_description="Delete a user", tags=['users'])
+@router.delete("/api/user/{id}", response_description="Delete a user", tags=['users api'])
 async def delete_user(id: str):
     response = await db.remove_user(id)
     if response:

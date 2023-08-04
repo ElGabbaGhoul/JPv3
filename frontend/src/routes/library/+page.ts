@@ -1,46 +1,40 @@
-// import { userId } from '$store/stores'
-// import { writable } from "svelte/store";
-// import { browser } from '$app/environment'
-// import { PUBLIC_BACKEND_USERS } from '$env/static/public'
-// import { loginName } from '$lib/stores/stores.js'
+import { browser } from '$app/environment'
+import { PUBLIC_BACKEND_USERS } from '$env/static/public'
 
-// export const prerender = true
-// async function getAccountDetails(accessToken) {
-// 	let data = null
-// 	if (typeof localStorage !== 'undefined') {
-// 		const response = await fetch(`${PUBLIC_BACKEND-USERS}/accounts/profile`, {
-// 			headers: {
-// 				Authorization: `Bearer ${accessToken}`
-// 			}
-// 		})
-// 		data = await response.json()
-// 		localStorage.setItem('userIdentity', JSON.stringify(data))
-// 		userId.set(data._id)
-// 		return data
-// 	}
-// }
+export const prerender = true
 
-// let loggedInUser: any = null;
-// loginName.subscribe((value) => {
-//   console.log(value)
-//   loggedInUser = value
-// })
+export const load = async ({ fetch }) => {
+  const getPlaylists = async () => {
+    let accessToken
+    if (browser) {
+      accessToken = document.cookie.split('=')[1]
+      console.log(accessToken)
+    }
+    const response = await fetch(`${PUBLIC_BACKEND_USERS}/accounts/profile/items`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    console.log('RESPONSE HERE', response)
+    // if (!response.ok) {
+    //   const errorText = await response.text()
+    //   throw new Error(`Failed to fetch playlists. Response status: ${response.status}. Response body: ${errorText}`)
+    // }
+    const playlist = await response.json()
+    return {playlist}
+  }
 
-// export const load = async ({ fetch }) => {
-//   const getSpotifySongs = async () => {
-//     let accessToken
-// 		if (browser) {
-// 			accessToken = document.cookie.split('=')[1]
-// 			console.log('accesstoken within my homes +page.js', accessToken.split('.'))
-// 		}
-// 		const response = await fetch(`${PUBLIC_BACKEND_USERS}/api/user/${loggedInUser}`, {
-// 			headers: {
-// 				Authorization: `Bearer ${accessToken}`
-// 			}
-// 		})
-// 		const data = await response.json()
-// 		return data
-// 	}
 
-// 	return getSpotifySongs()
-// }
+  // try {
+  //   const playlists = await getPlaylists()
+  //   return { playlists } // Wrap the playlists data in an object
+  // } catch (error: Error) {
+  //   console.error('Error fetching playlists:', error.message)
+  //   throw error
+  // }
+  
+  return getPlaylists()
+
+}
+
+

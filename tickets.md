@@ -11,17 +11,16 @@
   - [ ] Spotify
     - [ ] Add music to user playlists
     - [ ] Play music
-- [ ] Setup profile page to render user data 
-  - [ ] account page
-    - [ ] display username (email address)
-    - [ ] display name
-    - [ ] display pfp
-    - [ ] display role
-    - [ ] display playlist list
+- [x] Set account page to render user data 
+  - [x] display username (email address)
+  - [x] display name
+  - [ ] display pfp
+  - [x] display role
+  - [x] display playlist list
 
 
   ---
-  ## PostMVP
+  ## Post MVP
   - [ ] implement rate limiting (look in to aioredis)
   - [ ] implement signup form expectations (password strength, valid email, etc)
   - [ ] forgot password

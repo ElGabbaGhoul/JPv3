@@ -1,8 +1,8 @@
 // import { userId } from '$store/stores'
-import { writable } from "svelte/store";
+// import { writable } from "svelte/store";
+// import { loginName } from '$lib/stores/stores.js'
 import { browser } from '$app/environment'
 import { PUBLIC_BACKEND_USERS } from '$env/static/public'
-import { loginName } from '$lib/stores/stores.js'
 
 export const prerender = true
 // async function getAccountDetails(accessToken) {
@@ -29,7 +29,6 @@ export const prerender = true
 export const load = async ({ fetch }) => {
   const getAccountDetails = async () => {
     let accessToken
-    // console.log('loading username', loggedInUser)
 		if (browser) {
 			accessToken = document.cookie.split('=')[1]
 			// console.log('accesstoken within my homes +page.js', accessToken.split('.'))

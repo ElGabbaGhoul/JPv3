@@ -19,22 +19,20 @@ database = db.UserList
 collection = database.user
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
+    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials - playlists", headers={"WWW-Authenticate": "Bearer"})
     try:
         payload = jwt.decode(token, secret_key, algorithms=[algorithm])
+        print("Decoded payload:", payload)
         username: str = payload.get("sub")
         if username is None:
-            print('username is none')
             raise credential_exception
+        
         token_data=TokenData(username=username)
 
-
     except JWTError:
-      print('JWTError')
       raise credential_exception
 
     user = await get_user(username=token_data.username)
-    print('UNGA BUNGA', type(user))
     if user is None:
         print('user is None')
         raise credential_exception
