@@ -33,11 +33,12 @@ export const load = async ({ fetch }) => {
 			accessToken = document.cookie.split('=')[1]
 			// console.log('accesstoken within my homes +page.js', accessToken.split('.'))
 		}
-		const response = await fetch(`${PUBLIC_BACKEND_USERS}/accounts/profile`, {
+		const response = await fetch(`${PUBLIC_BACKEND_USERS}/accounts/profile/`, {
 			headers: {
 				Authorization: `Bearer ${accessToken}`
 			}
-		})
+    })
+    console.log('ACCOUNT response here', response)
 		const data = await response.json()
 		return data
 	}

@@ -8,14 +8,13 @@ export const load = async ({ fetch }) => {
     let accessToken
     if (browser) {
       accessToken = document.cookie.split('=')[1]
-      console.log(accessToken)
     }
     const response = await fetch(`${PUBLIC_BACKEND_USERS}/accounts/profile/items`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    console.log('RESPONSE HERE', response)
+    console.log('LIBRARY RESPONSE HERE', response)
     // if (!response.ok) {
     //   const errorText = await response.text()
     //   throw new Error(`Failed to fetch playlists. Response status: ${response.status}. Response body: ${errorText}`)

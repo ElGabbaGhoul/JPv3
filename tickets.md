@@ -6,7 +6,6 @@
   - [x] while Token, loggedIn===True
   - [x] change gap in +page.svelte to fit nav bar properly on smaller screens
 - [x] Change login page to request login with email instead of username
-- [ ] Create API calls to pull playlists to users from playlist api
 - [ ] Import music from external apis
   - [ ] Spotify
     - [ ] Add music to user playlists

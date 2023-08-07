@@ -5,6 +5,7 @@
 	import { isLoggedIn } from '$lib/stores/stores';
 
 	export let data;
+	console.log('Account Data Here!: ', data);
 
 	async function handleGoToLib() {
 		goto('/library');
@@ -22,6 +23,7 @@
 		// console.log('This is get playlist details', response);
 		const details = await response.json();
 		// console.log('This is the response', details);
+		console.log(details);
 		return details;
 	}
 
@@ -38,22 +40,31 @@
 		<div class="text-xl font-bold mt-2">Your role is:</div>
 		<div class="mt-1 ml-4">{data.role}</div>
 
-		<div class="text-xl font-bold mt-2">Your playlists:</div>
+		<div class="text-xl font-bold mt-2">Your Jams:</div>
+		{#if data.playlists.length == 0}
+			<div class="mt-1 ml-4">You currently have no Jams. Head to the library to make some!</div>
+			<button
+				class="ml-4 px-2 py-2 bg-green-400 rounded-lg text-white hover:bg-green-600 hover:underline"
+				on:click={handleGoToLib}>Take me there!</button
+			>
+		{/if}
+
 		{#each data.playlists as playlist}
 			{#await getPlaylistDetails(playlist)}
-				loading
+				loading...
 			{:then playlistDetails}
-				<div class="mt-1 ml-4">{playlistDetails.name}, {playlistDetails._id}</div>
-			{/await}
-			{#if data.playlists.length == 0}
 				<div class="mt-1 ml-4">
-					You currently have no playlists. Head to the library to make some!
+					Name: {playlistDetails.name}, Total Tracks:
+					{playlistDetails.tracks.length}, Duration: {playlistDetails.duration}
 				</div>
-				<button
-					class="ml-4 px-2 py-2 bg-green-400 rounded-lg text-white hover:bg-green-600 hover:underline"
-					on:click={handleGoToLib}>Take me there!</button
-				>
-			{/if}
+				{#each playlistDetails.tracks as track}
+					<div class="ml-6">
+						<div>Title: {track.title}</div>
+						<div>Artist: {track.artist}</div>
+						<div>Duration: {track.duration}</div>
+					</div>
+				{/each}
+			{/await}
 		{/each}
 	</div>
 {/if}
