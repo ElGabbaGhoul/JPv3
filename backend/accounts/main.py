@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-access_token_expires_minutes=int(os.getenv('ACCESS_TOKEN_EXPIRES_MINUTES'))
+access_token_expires_minutes=int(os.environ.get('ACCESS_TOKEN_EXPIRES_MINUTES'))
 
 
 from . import models, db, services
