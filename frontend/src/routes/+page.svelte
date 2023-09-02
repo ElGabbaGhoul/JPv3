@@ -5,6 +5,7 @@
 	import { PUBLIC_BACKEND_USERS } from '$env/static/public';
 	import WaveComponent from '$lib/components/WaveComponent.svelte';
 	import { isLoggedIn, loginName } from '$lib/stores/stores';
+	import Resume from '$lib/components/Resume.svelte';
 
 	let isMouseOver = false;
 
