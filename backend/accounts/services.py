@@ -5,6 +5,9 @@ from datetime import timedelta, datetime
 from jose import jwt, JWTError
 from . import models, db
 
+pepper = "a9d0a8w09a8f-a9w-a89afa6wa5sxhvkfgmfgh981?"
+joiner = "quwieoasjkdlxzcnvm,00"
+
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -13,11 +16,28 @@ algorithm=os.getenv('ALGORITHM')
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+# Salt:
+# Random value generated uniquely for each user's pw
+# When user creates or updates their pw, random salt is generated and combined w their pw before hashing
+# salt is then stored alongside hashedpw in the db
+# ensures identical pwds do not result in same hash value. Makes precomputed tables less effective.
+# Adds randomness to hashing process, making it computationally infeasible to use brute force/dictionary attacks
+
+# Pepper:
+# Random value, different than salt, kept secret & not stored alongside hashedpw in db
+# pepper typically added to pw before hashing, like salt, but is constant for all users and apps
+# kept secret within app's code/config, is not exposed in db (env?)
+# adds extra security. Even if attacker gains access to db and knows hashing algo andd salt, still won't be crackable
+# security of pepper relies on secrecy. if pepper is compromised can severely weaken security of pw storage
 
 def get_password_hash(password):
-    return pwd_context.hash(password)
+    return pepper + joiner + pwd_context.hash(password)
 
 async def verify_password(plain_password, hashed_password):
+    print(hashed_password)
+    fully_hashed = hashed_password.split(joiner)
+    print(fully_hashed)
+    hashed_password = fully_hashed[1]
     return pwd_context.verify(plain_password, hashed_password)
 
 async def create_access_token(data: dict, expires_delta: timedelta or None=None):
