@@ -28,6 +28,7 @@ class User(BaseModel):
     profile_picture: Optional[str]
     role: str
     playlists: List[str] = []
+    salt: str
 
 
 
@@ -40,7 +41,8 @@ class User(BaseModel):
               'username':'john@doe.com',
               'name':'John Doe',
               'profile_picture':'https://example.com/profile.jpg',
-              'role':'Admin'
+              'role':'Admin',
+              'salt': ''
             }
         }
 
@@ -52,6 +54,7 @@ class UpdateUserModel(BaseModel):
     profile_picture: Optional[str]
     role: Optional[str]
     playlists: Optional[List[str]]
+    salt: Optional[str]
 
 
     class Config:
@@ -62,7 +65,8 @@ class UpdateUserModel(BaseModel):
               'username':'john@doe.com',
               'name':'John Doe',
               'profile_picture':'https://example.com/profile.jpg',
-              'role':'Admin'
+              'role':'Admin',
+              'salt': ''
             }
         }
 
@@ -80,6 +84,7 @@ class UserInDB(User):
     profile_picture: str
     role: str
     playlists: List[str] = []
+    salt: str
 
     class Config:
       allow_population_by_field_name = True
@@ -91,6 +96,7 @@ class UserInDB(User):
               'name':'John Doe',
               'profile_picture':'https://example.com/profile.jpg',
               'role':'Admin',
-              'hashed_password':'password123'
+              'hashed_password':'password123',
+              'salt': ''
             }
         }

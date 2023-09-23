@@ -59,9 +59,10 @@ async def create_new_user(user: models.UserInDB = Body(...)):
     if existing_user:
         raise HTTPException(status_code=409, detail="User with username already exists")
 
-    # Hash password
-    user.hashed_password = services.get_password_hash(user.hashed_password)
-
+    # Salt & Hash password
+    hashed_password, salt = services.get_season_and_hash_password(user.hashed_password)
+    user.hashed_password = hashed_password
+    user.salt = salt
     # Create user
     user_dict = jsonable_encoder(user)
     response = await db.create_user(user_dict)

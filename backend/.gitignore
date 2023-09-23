@@ -1,6 +1,8 @@
 ./venv
 .env
+env
 Dockerfile
 .dockerignore
 .venv
 __pycache__
+.gitignore
